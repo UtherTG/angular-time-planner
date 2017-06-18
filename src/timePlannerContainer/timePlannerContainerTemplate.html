@@ -1,0 +1,10 @@
+<div class="atp-container">
+  <div class="atp-head">
+    <div class="atp-row">
+      <div class="atp-cell atpr-title">{{locale.labels.rowTitle}}</div>
+      <div class="atp-cell atpr-counter" ng-if="options.needCounter">{{locale.labels.counterTitle.hours}}</div>
+      <div class="atp-cell week-day atp-segment" ng-repeat="segment in segments">{{segment}}</div>
+    </div>
+  </div>
+  <div class="atp-row" time-planner-row ng-repeat="row in rows"></div>
+</div>

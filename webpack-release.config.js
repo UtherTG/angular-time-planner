@@ -1,0 +1,17 @@
+let
+  path = require('path'),
+  config = require('./webpack.config'),
+  releaseConfig;
+
+releaseConfig = {
+  output: {
+    filename: 'angular-time-planner.min.js',
+    path: path.resolve(__dirname, 'release'),
+    library: 'angular-time-planner',
+    libraryTarget: 'umd',
+    umdNamedDefine: true
+  },
+  devtool: 'source-map'
+};
+
+module.exports = Object.assign(config, releaseConfig);

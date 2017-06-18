@@ -1,0 +1,77 @@
+$header-cell-background-color: #e8f2f6;
+$cell-background-color: #f7f7f7;
+
+time-planner-container {
+  display: block;
+  position: relative;
+  font-size: 16px;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  overflow-x: auto;
+  background-color: $cell-background-color;
+
+  .atp-head .atp-cell {
+    background-color: $header-cell-background-color;
+    border-bottom: 2px solid #78909c;
+    text-align: center !important;
+
+    &.atp-segment:nth-child(odd) {
+      background-color: darken($header-cell-background-color, 5);
+    }
+  }
+
+  .atp-row {
+    height: 3em;
+
+    &:last-child .atp-cell {
+      border-bottom: 2px solid #78909c;
+    }
+  }
+
+  .atp-segment:nth-child(odd) {
+    background-color: darken($cell-background-color, 5);
+  }
+
+  .atp-cell {
+    display: inline-block;
+    height: 3em;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 3em;
+    background-color: $cell-background-color;
+
+    &.atpr-counter,
+    &.atpr-title {
+      padding: 0 1em;
+    }
+
+    &.atpr-title {
+      width: 160px;
+      text-align: left;
+    }
+
+    &.atpr-counter {
+      width: 85px;
+      border-left: none;
+    }
+
+    &.week-day {
+      width: 100px;
+    }
+  }
+
+  .atp-segment-item {
+    line-height: .5em;
+    height: .5em;
+    width: 100%;
+  }
+
+  .atp-segment-item-wrapper {
+    display: flex;
+    align-items: flex-end;
+    align-content: flex-end;
+    flex-wrap: wrap;
+    height: 100%;
+  }
+}
+
