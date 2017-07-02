@@ -8,9 +8,7 @@ import '../styles/angular-time-planner.scss';
 
 angular
   .module('angularTimePlanner', ['timePlannerContainerDirective', 'timePlannerRowDirective', 'timePlannerCellDirective'])
-  .constant('LOCALES', (() => {
-    return {
-      DEFAULT: 'en-us',
-      AVAILABLE: ['en-us']
-    }
-  })());
+  .constant('LOCALES', {
+    DEFAULT: 'en-us',
+    AVAILABLE: ['en-us']
+  });

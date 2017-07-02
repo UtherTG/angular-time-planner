@@ -273,12 +273,10 @@ __webpack_require__(1);
 
 __webpack_require__(4);
 
-angular.module('angularTimePlanner', ['timePlannerContainerDirective', 'timePlannerRowDirective', 'timePlannerCellDirective']).constant('LOCALES', function () {
-  return {
-    DEFAULT: 'en-us',
-    AVAILABLE: ['en-us']
-  };
-}());
+angular.module('angularTimePlanner', ['timePlannerContainerDirective', 'timePlannerRowDirective', 'timePlannerCellDirective']).constant('LOCALES', {
+  DEFAULT: 'en-us',
+  AVAILABLE: ['en-us']
+});
 
 /***/ }),
 /* 6 */
