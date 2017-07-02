@@ -4,17 +4,22 @@ angular
   .module('timePlannerRowDirective', [])
   .directive('timePlannerRow', () => {
     let link = (scope) => {
+      let _methods = {
+        week: {
+          fillSegments: _fillSegmentsForWeek
+        }
+      };
+
       _prepareItems();
 
-      // For now it's only for weekly view
       function _prepareItems() {
         scope.row.segments = [];
         scope.row.hours = 0;
         scope.$parent.segments.forEach(() => scope.row.segments.push([]));
-        scope.row.items.forEach(_fillSegments);
+        scope.row.items.forEach(_methods[scope.$parent.options.timeScope].fillSegments);
       }
 
-      function _fillSegments(item) {
+      function _fillSegmentsForWeek(item) {
         let
           scheduledStart = new Date(item.scheduled_start),
           scheduledEnd = new Date(item.scheduled_end),

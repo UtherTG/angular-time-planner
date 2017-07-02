@@ -7,7 +7,7 @@ devConfig = {
   output: {
     filename: 'angular-time-planner.js',
     path: path.resolve(__dirname, 'release'),
-    library: 'angular-time-planner',
+    library: 'angularTimePlanner',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },

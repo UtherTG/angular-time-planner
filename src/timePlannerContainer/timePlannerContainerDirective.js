@@ -5,16 +5,23 @@ angular
   .module('timePlannerContainerDirective', [])
   .directive('timePlannerContainer', ['$locale', 'LOCALES', ($locale, LOCALES) => {
     let link = (scope) => {
-      let localeId = LOCALES.AVAILABLE.includes($locale.id) ? $locale.id : LOCALES.DEFAULT;
+      let
+        _localeId = LOCALES.AVAILABLE.includes($locale.id) ? $locale.id : LOCALES.DEFAULT,
+        _defaultOptions = {
+          timeScope: 'week',
+          needCounter: false
+        };
 
       // we use an object with merged default locale and scope override(if any)
-      scope.locale = merge(require(`../timePlannerLocales/time-planner-locale_${localeId}`), scope.options.locale);
+      scope.locale = merge(require(`../timePlannerLocales/time-planner-locale_${_localeId}`), scope.options.locale);
+      // merge defaults with user options
+      scope.options = merge(_defaultOptions, scope.options);
 
       scope.segments = _getSegments();
 
       // Get segments for planner, hours, week, dates range. Default is a week.
       function _getSegments() {
-        switch (scope.options.timeRangeType) { // rename
+        switch (scope.options.timeScope) {
           case 'day':
             // reserved for future use
             break;

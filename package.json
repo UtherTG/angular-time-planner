@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node_modules/.bin/webpack -p --config webpack-release.config.js",
-    "watch": "node_modules/.bin/webpack --progress --colors --watch --config webpack-develoment.config.js",
+    "watch": "node_modules/.bin/webpack --progress --colors --watch --config webpack-development.config.js",
     "test": "echo \"tests\"",
     "release": "echo \"npm magic goes here\""
   },
