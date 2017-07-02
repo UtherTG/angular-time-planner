@@ -2,12 +2,17 @@ import template from './timePlannerCellTemplate.html';
 
 angular
   .module('timePlannerCellDirective', [])
-  .directive('timePlannerCell', () => {
+  .directive('timePlannerCell', ['$rootScope', ($rootScope) => {
     let link = (scope) => {
       scope.onHoverEvent = onHoverEvent;
+      scope.onClickEvent = dispatchClickEvent;
 
       function onHoverEvent(item) {
         scope.$parent.highlightedItem = item;
+      }
+
+      function dispatchClickEvent(item) {
+        $rootScope.$broadcast('ATP_SEGMENT_ON_CLICK', item);
       }
     };
 
@@ -16,4 +21,4 @@ angular
       template: template,
       link: link
     };
-  });
+  }]);

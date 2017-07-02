@@ -100,18 +100,23 @@ module.exports = {
 "use strict";
 
 
-var _timePlannerCellTemplate = __webpack_require__(7);
+var _timePlannerCellTemplate = __webpack_require__(11);
 
 var _timePlannerCellTemplate2 = _interopRequireDefault(_timePlannerCellTemplate);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-angular.module('timePlannerCellDirective', []).directive('timePlannerCell', function () {
+angular.module('timePlannerCellDirective', []).directive('timePlannerCell', ['$rootScope', function ($rootScope) {
   var link = function link(scope) {
     scope.onHoverEvent = onHoverEvent;
+    scope.onClickEvent = dispatchClickEvent;
 
     function onHoverEvent(item) {
       scope.$parent.highlightedItem = item;
+    }
+
+    function dispatchClickEvent(item) {
+      $rootScope.$broadcast('ATP_SEGMENT_ON_CLICK', item);
     }
   };
 
@@ -120,7 +125,7 @@ angular.module('timePlannerCellDirective', []).directive('timePlannerCell', func
     template: _timePlannerCellTemplate2.default,
     link: link
   };
-});
+}]);
 
 /***/ }),
 /* 2 */
@@ -129,7 +134,7 @@ angular.module('timePlannerCellDirective', []).directive('timePlannerCell', func
 "use strict";
 
 
-var _timePlannerContainerTemplate = __webpack_require__(8);
+var _timePlannerContainerTemplate = __webpack_require__(7);
 
 var _timePlannerContainerTemplate2 = _interopRequireDefault(_timePlannerContainerTemplate);
 
@@ -150,7 +155,7 @@ angular.module('timePlannerContainerDirective', []).directive('timePlannerContai
     };
 
     // we use an object with merged default locale and scope override(if any)
-    scope.locale = (0, _deepmerge2.default)(__webpack_require__(10)("./time-planner-locale_" + _localeId), scope.options.locale);
+    scope.locale = (0, _deepmerge2.default)(__webpack_require__(9)("./time-planner-locale_" + _localeId), scope.options.locale);
     // merge defaults with user options
     scope.options = (0, _deepmerge2.default)(_defaultOptions, scope.options);
 
@@ -197,7 +202,7 @@ angular.module('timePlannerContainerDirective', []).directive('timePlannerContai
 "use strict";
 
 
-var _timePlannerRowTemplate = __webpack_require__(9);
+var _timePlannerRowTemplate = __webpack_require__(8);
 
 var _timePlannerRowTemplate2 = _interopRequireDefault(_timePlannerRowTemplate);
 
@@ -372,22 +377,16 @@ module.exports = index;
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=atp-segment-item-wrapper><div class=atp-segment-item ng-repeat=\"item in segment\" ng-class=\"[item.segmentType, {'highlighted': (item.id === highlightedItem.id)}]\" ng-mouseenter=onHoverEvent(item) ng-mouseleave=onHoverEvent() ng-click=\"\"></div></div>";
+module.exports = "<div class=atp-container><div class=atp-head><div class=atp-row><div class=\"atp-cell atpr-title\">{{locale.labels.rowTitle}}</div><div class=\"atp-cell atpr-counter\" ng-if=options.needCounter>{{locale.labels.counterTitle.hours}}</div><div class=\"atp-cell week-day atp-segment\" ng-repeat=\"segment in segments\">{{segment}}</div></div></div><div class=atp-row time-planner-row ng-repeat=\"row in rows\"></div></div>";
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=atp-container><div class=atp-head><div class=atp-row><div class=\"atp-cell atpr-title\">{{locale.labels.rowTitle}}</div><div class=\"atp-cell atpr-counter\" ng-if=options.needCounter>{{locale.labels.counterTitle.hours}}</div><div class=\"atp-cell week-day atp-segment\" ng-repeat=\"segment in segments\">{{segment}}</div></div></div><div class=atp-row time-planner-row ng-repeat=\"row in rows\"></div></div>";
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
 module.exports = "<div class=\"atp-cell atpr-title\">{{row.title}}</div><div class=\"atp-cell atpr-counter\" ng-if=options.needCounter>{{row.hours || 0}}</div><div class=\"atp-cell week-day atp-segment\" ng-repeat=\"segment in row.segments\" time-planner-cell></div>";
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -408,7 +407,14 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 10;
+webpackContext.id = 9;
+
+/***/ }),
+/* 10 */,
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=atp-segment-item-wrapper><div class=atp-segment-item ng-repeat=\"item in segment\" ng-class=\"[item.segmentType, {'highlighted': (item.id === highlightedItem.id)}]\" ng-mouseenter=onHoverEvent(item) ng-mouseleave=onHoverEvent() ng-click=onClickEvent(item)></div></div>";
 
 /***/ })
 /******/ ]);
