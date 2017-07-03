@@ -6,6 +6,8 @@ time-planner-container {
   white-space: nowrap;
   overflow-x: auto;
   background-color: #f7f7f7; }
+  time-planner-container .atp-container {
+    display: inline-block; }
   time-planner-container .atp-head .atp-cell {
     background-color: #e8f2f6;
     border-bottom-width: 2px;
@@ -55,5 +57,7 @@ time-planner-container {
     align-content: flex-end;
     flex-wrap: wrap;
     height: 100%; }
+  time-planner-container .on-drag-hover .atp-cell {
+    background: #999; }
 
 /*# sourceMappingURL=angular-planner.css.map*/

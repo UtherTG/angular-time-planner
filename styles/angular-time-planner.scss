@@ -11,6 +11,10 @@ time-planner-container {
   overflow-x: auto;
   background-color: $cell-background-color;
 
+  .atp-container {
+    display: inline-block;
+  }
+
   .atp-head .atp-cell {
     background-color: $header-cell-background-color;
     border-bottom-width: 2px;
@@ -86,5 +90,7 @@ time-planner-container {
     flex-wrap: wrap;
     height: 100%;
   }
+
+  .on-drag-hover .atp-cell { background: #999; }
 }
 
