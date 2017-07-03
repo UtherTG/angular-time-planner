@@ -6,5 +6,9 @@
       <div class="atp-cell week-day atp-segment" ng-repeat="segment in segments">{{segment}}</div>
     </div>
   </div>
-  <div class="atp-row" time-planner-row ng-repeat="row in rows"></div>
+  <div class="atp-row"
+       ng-repeat="row in rows"
+       drop-channel="{{options.editable && row.editable && options.dropChannel}}"
+       ui-on-drop="onDropEvent($data, row.id)"
+       time-planner-row></div>
 </div>

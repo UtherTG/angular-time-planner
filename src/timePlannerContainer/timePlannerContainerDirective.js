@@ -1,16 +1,24 @@
 import template from './timePlannerContainerTemplate.html';
 import merge from 'deepmerge';
+import 'angular-native-dragdrop';
+
 
 angular
-  .module('timePlannerContainerDirective', [])
-  .directive('timePlannerContainer', ['$locale', 'LOCALES', ($locale, LOCALES) => {
+  .module('timePlannerContainerDirective', ['ang-drag-drop'])
+  .directive('timePlannerContainer', ['$rootScope', '$locale', 'LOCALES', ($rootScope, $locale, LOCALES) => {
     let link = (scope) => {
       let
         _localeId = LOCALES.AVAILABLE.includes($locale.id) ? $locale.id : LOCALES.DEFAULT,
         _defaultOptions = {
           timeScope: 'week',
-          needCounter: false
+          needCounter: false,
+          editable: false,
+          dropChannel: 'atp-row'
         };
+
+      // Scope functions
+      scope.onDropEvent = (item, rowId) => { $rootScope.$broadcast('ATP_ITEM_ON_DROP', {id: rowId, item: item}) };
+
 
       // we use an object with merged default locale and scope override(if any)
       scope.locale = merge(require(`../timePlannerLocales/time-planner-locale_${_localeId}`), scope.options.locale);
