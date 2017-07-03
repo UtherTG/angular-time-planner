@@ -10,8 +10,10 @@ angular
         }
       };
 
+      // INIT
       _prepareItems();
 
+      // Generate segments for each row
       function _prepareItems() {
         scope.row.segments = [];
         scope.row.hours = 0;
@@ -19,6 +21,7 @@ angular
         scope.row.items.forEach(_methods[scope.$parent.options.timeScope].fillSegments);
       }
 
+      // Fill each segment with items. This method is solely for week time scope
       function _fillSegmentsForWeek(item) {
         let
           scheduledStart = new Date(item.scheduled_start),

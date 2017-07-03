@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -100,7 +100,7 @@ module.exports = {
 "use strict";
 
 
-var _timePlannerCellTemplate = __webpack_require__(7);
+var _timePlannerCellTemplate = __webpack_require__(9);
 
 var _timePlannerCellTemplate2 = _interopRequireDefault(_timePlannerCellTemplate);
 
@@ -108,16 +108,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 angular.module('timePlannerCellDirective', []).directive('timePlannerCell', ['$rootScope', function ($rootScope) {
   var link = function link(scope) {
-    scope.onHoverEvent = onHoverEvent;
-    scope.onClickEvent = dispatchClickEvent;
-
-    function onHoverEvent(item) {
+    // Scope functions
+    scope.onHoverEvent = function (item) {
       scope.$parent.highlightedItem = item;
-    }
-
-    function dispatchClickEvent(item) {
-      $rootScope.$broadcast('ATP_SEGMENT_ON_CLICK', item);
-    }
+    };
+    scope.onClickEvent = function (item) {
+      return $rootScope.$broadcast('ATP_SEGMENT_ON_CLICK', item);
+    };
   };
 
   return {
@@ -134,15 +131,15 @@ angular.module('timePlannerCellDirective', []).directive('timePlannerCell', ['$r
 "use strict";
 
 
-var _timePlannerContainerTemplate = __webpack_require__(8);
+var _timePlannerContainerTemplate = __webpack_require__(10);
 
 var _timePlannerContainerTemplate2 = _interopRequireDefault(_timePlannerContainerTemplate);
 
-var _deepmerge = __webpack_require__(6);
+var _deepmerge = __webpack_require__(8);
 
 var _deepmerge2 = _interopRequireDefault(_deepmerge);
 
-__webpack_require__(13);
+__webpack_require__(6);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -160,11 +157,11 @@ angular.module('timePlannerContainerDirective', ['ang-drag-drop']).directive('ti
 
     // Scope functions
     scope.onDropEvent = function (item, rowId) {
-      $rootScope.$broadcast('ATP_ITEM_ON_DROP', { id: rowId, item: item });
+      return $rootScope.$broadcast('ATP_ITEM_ON_DROP', { id: rowId, item: item });
     };
 
     // we use an object with merged default locale and scope override(if any)
-    scope.locale = (0, _deepmerge2.default)(__webpack_require__(10)("./time-planner-locale_" + _localeId), scope.options.locale);
+    scope.locale = (0, _deepmerge2.default)(__webpack_require__(12)("./time-planner-locale_" + _localeId), scope.options.locale);
     // merge defaults with user options
     scope.options = (0, _deepmerge2.default)(_defaultOptions, scope.options);
 
@@ -211,7 +208,7 @@ angular.module('timePlannerContainerDirective', ['ang-drag-drop']).directive('ti
 "use strict";
 
 
-var _timePlannerRowTemplate = __webpack_require__(9);
+var _timePlannerRowTemplate = __webpack_require__(11);
 
 var _timePlannerRowTemplate2 = _interopRequireDefault(_timePlannerRowTemplate);
 
@@ -225,8 +222,10 @@ angular.module('timePlannerRowDirective', []).directive('timePlannerRow', functi
       }
     };
 
+    // INIT
     _prepareItems();
 
+    // Generate segments for each row
     function _prepareItems() {
       scope.row.segments = [];
       scope.row.hours = 0;
@@ -236,6 +235,7 @@ angular.module('timePlannerRowDirective', []).directive('timePlannerRow', functi
       scope.row.items.forEach(_methods[scope.$parent.options.timeScope].fillSegments);
     }
 
+    // Fill each segment with items. This method is solely for week time scope
     function _fillSegmentsForWeek(item) {
       var scheduledStart = new Date(item.scheduled_start),
           scheduledEnd = new Date(item.scheduled_end),
@@ -274,159 +274,6 @@ angular.module('timePlannerRowDirective', []).directive('timePlannerRow', functi
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(2);
-
-__webpack_require__(3);
-
-__webpack_require__(1);
-
-__webpack_require__(4);
-
-angular.module('angularTimePlanner', ['timePlannerContainerDirective', 'timePlannerRowDirective', 'timePlannerCellDirective']).constant('LOCALES', {
-  DEFAULT: 'en-us',
-  AVAILABLE: ['en-us']
-});
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var index$2 = function isMergeableObject(value) {
-	return isNonNullObject(value) && isNotSpecial(value)
-};
-
-function isNonNullObject(value) {
-	return !!value && typeof value === 'object'
-}
-
-function isNotSpecial(value) {
-	var stringValue = Object.prototype.toString.call(value);
-
-	return stringValue !== '[object RegExp]'
-		&& stringValue !== '[object Date]'
-}
-
-function emptyTarget(val) {
-    return Array.isArray(val) ? [] : {}
-}
-
-function cloneIfNecessary(value, optionsArgument) {
-    var clone = optionsArgument && optionsArgument.clone === true;
-    return (clone && index$2(value)) ? deepmerge(emptyTarget(value), value, optionsArgument) : value
-}
-
-function defaultArrayMerge(target, source, optionsArgument) {
-    var destination = target.slice();
-    source.forEach(function(e, i) {
-        if (typeof destination[i] === 'undefined') {
-            destination[i] = cloneIfNecessary(e, optionsArgument);
-        } else if (index$2(e)) {
-            destination[i] = deepmerge(target[i], e, optionsArgument);
-        } else if (target.indexOf(e) === -1) {
-            destination.push(cloneIfNecessary(e, optionsArgument));
-        }
-    });
-    return destination
-}
-
-function mergeObject(target, source, optionsArgument) {
-    var destination = {};
-    if (index$2(target)) {
-        Object.keys(target).forEach(function(key) {
-            destination[key] = cloneIfNecessary(target[key], optionsArgument);
-        });
-    }
-    Object.keys(source).forEach(function(key) {
-        if (!index$2(source[key]) || !target[key]) {
-            destination[key] = cloneIfNecessary(source[key], optionsArgument);
-        } else {
-            destination[key] = deepmerge(target[key], source[key], optionsArgument);
-        }
-    });
-    return destination
-}
-
-function deepmerge(target, source, optionsArgument) {
-    var array = Array.isArray(source);
-    var options = optionsArgument || { arrayMerge: defaultArrayMerge };
-    var arrayMerge = options.arrayMerge || defaultArrayMerge;
-
-    if (array) {
-        return Array.isArray(target) ? arrayMerge(target, source, optionsArgument) : cloneIfNecessary(source, optionsArgument)
-    } else {
-        return mergeObject(target, source, optionsArgument)
-    }
-}
-
-deepmerge.all = function deepmergeAll(array, optionsArgument) {
-    if (!Array.isArray(array) || array.length < 2) {
-        throw new Error('first argument should be an array with at least two elements')
-    }
-
-    // we are sure there are at least 2 values, so it is safe to have no initial value
-    return array.reduce(function(prev, next) {
-        return deepmerge(prev, next, optionsArgument)
-    })
-};
-
-var index = deepmerge;
-
-module.exports = index;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=atp-segment-item-wrapper><div class=atp-segment-item ng-repeat=\"item in segment\" ng-class=\"[item.segmentType, {'highlighted': (item.id === highlightedItem.id)}]\" ng-mouseenter=onHoverEvent(item) ng-mouseleave=onHoverEvent() ng-click=onClickEvent(item)></div></div>";
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=atp-container><div class=atp-head><div class=atp-row><div class=\"atp-cell atpr-title\">{{locale.labels.rowTitle}}</div><div class=\"atp-cell atpr-counter\" ng-if=options.needCounter>{{locale.labels.counterTitle.hours}}</div><div class=\"atp-cell week-day atp-segment\" ng-repeat=\"segment in segments\">{{segment}}</div></div></div><div class=atp-row ng-repeat=\"row in rows\" drop-channel=\"{{options.editable && row.editable && options.dropChannel}}\" ui-on-drop=\"onDropEvent($data, row.id)\" time-planner-row></div></div>";
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"atp-cell atpr-title\">{{row.title}}</div><div class=\"atp-cell atpr-counter\" ng-if=options.needCounter>{{row.hours || 0}}</div><div class=\"atp-cell week-day atp-segment\" ng-repeat=\"segment in row.segments\" time-planner-cell></div>";
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./time-planner-locale_en-us": 0,
-	"./time-planner-locale_en-us.js": 0
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 10;
-
-/***/ }),
-/* 11 */,
-/* 12 */
 /***/ (function(module, exports) {
 
 (function(angular) {
@@ -891,12 +738,164 @@ webpackContext.id = 10;
 
 
 /***/ }),
-/* 13 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(12);
+__webpack_require__(5);
 module.exports = 'ang-drag-drop';
 
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(2);
+
+__webpack_require__(3);
+
+__webpack_require__(1);
+
+__webpack_require__(4);
+
+angular.module('angularTimePlanner', ['timePlannerContainerDirective', 'timePlannerRowDirective', 'timePlannerCellDirective']).constant('LOCALES', {
+  DEFAULT: 'en-us',
+  AVAILABLE: ['en-us']
+});
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var index$2 = function isMergeableObject(value) {
+	return isNonNullObject(value) && isNotSpecial(value)
+};
+
+function isNonNullObject(value) {
+	return !!value && typeof value === 'object'
+}
+
+function isNotSpecial(value) {
+	var stringValue = Object.prototype.toString.call(value);
+
+	return stringValue !== '[object RegExp]'
+		&& stringValue !== '[object Date]'
+}
+
+function emptyTarget(val) {
+    return Array.isArray(val) ? [] : {}
+}
+
+function cloneIfNecessary(value, optionsArgument) {
+    var clone = optionsArgument && optionsArgument.clone === true;
+    return (clone && index$2(value)) ? deepmerge(emptyTarget(value), value, optionsArgument) : value
+}
+
+function defaultArrayMerge(target, source, optionsArgument) {
+    var destination = target.slice();
+    source.forEach(function(e, i) {
+        if (typeof destination[i] === 'undefined') {
+            destination[i] = cloneIfNecessary(e, optionsArgument);
+        } else if (index$2(e)) {
+            destination[i] = deepmerge(target[i], e, optionsArgument);
+        } else if (target.indexOf(e) === -1) {
+            destination.push(cloneIfNecessary(e, optionsArgument));
+        }
+    });
+    return destination
+}
+
+function mergeObject(target, source, optionsArgument) {
+    var destination = {};
+    if (index$2(target)) {
+        Object.keys(target).forEach(function(key) {
+            destination[key] = cloneIfNecessary(target[key], optionsArgument);
+        });
+    }
+    Object.keys(source).forEach(function(key) {
+        if (!index$2(source[key]) || !target[key]) {
+            destination[key] = cloneIfNecessary(source[key], optionsArgument);
+        } else {
+            destination[key] = deepmerge(target[key], source[key], optionsArgument);
+        }
+    });
+    return destination
+}
+
+function deepmerge(target, source, optionsArgument) {
+    var array = Array.isArray(source);
+    var options = optionsArgument || { arrayMerge: defaultArrayMerge };
+    var arrayMerge = options.arrayMerge || defaultArrayMerge;
+
+    if (array) {
+        return Array.isArray(target) ? arrayMerge(target, source, optionsArgument) : cloneIfNecessary(source, optionsArgument)
+    } else {
+        return mergeObject(target, source, optionsArgument)
+    }
+}
+
+deepmerge.all = function deepmergeAll(array, optionsArgument) {
+    if (!Array.isArray(array) || array.length < 2) {
+        throw new Error('first argument should be an array with at least two elements')
+    }
+
+    // we are sure there are at least 2 values, so it is safe to have no initial value
+    return array.reduce(function(prev, next) {
+        return deepmerge(prev, next, optionsArgument)
+    })
+};
+
+var index = deepmerge;
+
+module.exports = index;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=atp-segment-item-wrapper><div class=atp-segment-item ng-repeat=\"item in segment\" ng-class=\"[item.segmentType, {'highlighted': (item.id === highlightedItem.id)}]\" ng-mouseenter=onHoverEvent(item) ng-mouseleave=onHoverEvent() ng-click=onClickEvent(item)></div></div>";
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=atp-container><div class=atp-head><div class=atp-row><div class=\"atp-cell atpr-title\">{{locale.labels.rowTitle}}</div><div class=\"atp-cell atpr-counter\" ng-if=options.needCounter>{{locale.labels.counterTitle.hours}}</div><div class=\"atp-cell week-day atp-segment\" ng-repeat=\"segment in segments\">{{segment}}</div></div></div><div class=atp-row ng-repeat=\"row in rows\" drop-channel=\"{{options.editable && row.editable && options.dropChannel}}\" ui-on-drop=\"onDropEvent($data, row.id)\" time-planner-row></div></div>";
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"atp-cell atpr-title\">{{row.title}}</div><div class=\"atp-cell atpr-counter\" ng-if=options.needCounter>{{row.hours || 0}}</div><div class=\"atp-cell week-day atp-segment\" ng-repeat=\"segment in row.segments\" time-planner-cell></div>";
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./time-planner-locale_en-us": 0,
+	"./time-planner-locale_en-us.js": 0
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 12;
 
 /***/ })
 /******/ ]);

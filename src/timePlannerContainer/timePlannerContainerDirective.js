@@ -17,7 +17,7 @@ angular
         };
 
       // Scope functions
-      scope.onDropEvent = (item, rowId) => { $rootScope.$broadcast('ATP_ITEM_ON_DROP', {id: rowId, item: item}) };
+      scope.onDropEvent = (item, rowId) => $rootScope.$broadcast('ATP_ITEM_ON_DROP', {id: rowId, item: item});
 
 
       // we use an object with merged default locale and scope override(if any)
