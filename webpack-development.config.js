@@ -11,7 +11,7 @@ devConfig = {
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
-  devtool: 'cheap-module-source-map',
+  devtool: 'cheap-module-eval-source-map',
   watchOptions: {
     poll: true
   }
