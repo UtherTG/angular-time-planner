@@ -11,7 +11,10 @@ releaseConfig = {
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
-  devtool: 'source-map'
+  devtool: 'source-map',
+  externals: {
+    'angular': 'angular'
+  }
 };
 
 module.exports = Object.assign(config, releaseConfig);
