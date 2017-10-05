@@ -1,9 +1,18 @@
 <div class="atp-container">
   <div class="atp-head">
     <div class="atp-row">
-      <div class="atp-cell atpr-title">{{locale.labels.rowTitle}}</div>
-      <div class="atp-cell atpr-counter" ng-if="options.needCounter">{{locale.labels.counterTitle.hours}}</div>
-      <div class="atp-cell week-day atp-segment" ng-repeat="segment in segments">{{segment}}</div>
+      <div class="atp-cell atpr-title">
+        <span class="atpc-label">{{locale.labels.rowTitle}}</span>
+      </div>
+      <div class="atp-cell atpr-counter" ng-if="options.needCounter">
+        <span class="atpc-label">{{locale.labels.counterTitle.hours}}</span>
+      </div>
+      <div class="atp-cell atp-segment"
+           ng-repeat="segment in segments"
+           ng-class="{'week-day-segment': options.timeScope === 'week',
+                      'hour-segment': options.timeScope === 'day'}">
+        <span class="atpc-label">{{segment}}</span>
+      </div>
     </div>
   </div>
   <div class="atp-row"

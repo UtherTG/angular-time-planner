@@ -26,7 +26,8 @@ time-planner-container {
   }
 
   .atp-row {
-    height: 3em;
+    min-height: 3em;
+    display: flex;
 
     &:last-child .atp-cell {
       border-bottom: 2px solid $cell-border-color;
@@ -38,13 +39,14 @@ time-planner-container {
   }
 
   .atp-cell {
-    display: inline-block;
-    height: 3em;
+    display: flex;
+    min-height: 3em;
     text-align: center;
     vertical-align: middle;
     line-height: 3em;
     background-color: $cell-background-color;
     border-bottom: 1px solid $cell-border-color;
+    align-items: stretch;
 
     &.atpr-counter,
     &.atpr-title {
@@ -61,9 +63,17 @@ time-planner-container {
       border-left: none;
     }
 
-    &.week-day {
+    &.week-day-segment {
       width: 100px;
     }
+    &.hour-segment {
+      width: 40px;
+    }
+  }
+
+  .atpc-label {
+    align-self: center;
+    width: 100%;
   }
 
   .atp-segment-item {
@@ -89,6 +99,7 @@ time-planner-container {
     align-content: flex-end;
     flex-wrap: wrap;
     height: 100%;
+    width: 100%;
   }
 
   .on-drag-hover .atp-cell { background: #999; }

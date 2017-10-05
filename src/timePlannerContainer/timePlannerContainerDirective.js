@@ -31,7 +31,7 @@ angular
       function _getSegments() {
         switch (scope.options.timeScope) {
           case 'day':
-            // reserved for future use
+            return _getHours();
             break;
           case 'range':
             // reserved for future use
@@ -40,6 +40,16 @@ angular
           default:
             return _getWeekDays();
         }
+      }
+
+      function _getHours() {
+        const hours = [];
+
+        for (let i = 0; i <= 24; i++) {
+          hours.push(i);
+        }
+
+        return hours;
       }
 
       // I use only days from locales. First day of the week is the same as Date() (0 - Sun)
