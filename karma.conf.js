@@ -1,7 +1,7 @@
 let webpackTestsConfig = require('./webpack-test.config');
 
 module.exports = function(config) {
-  config.set({
+  const configuration = {
     basePath: '.',
     frameworks: ['jasmine'],
     files: [
@@ -27,7 +27,19 @@ module.exports = function(config) {
     autoWatch: false,
     autoWatchBatchDelay: 300,
     browsers: ['Chrome'],
+    customLaunchers: {
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
     singleRun: true,
     concurrency: Infinity
-  })
+  };
+
+  if (process.env.TRAVIS) {
+    configuration.browsers = ['Chrome_travis_ci'];
+  }
+
+  config.set(configuration);
 };
