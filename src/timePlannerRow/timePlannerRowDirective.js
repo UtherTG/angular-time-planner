@@ -3,7 +3,7 @@ import template from './timePlannerRowTemplate.html';
 angular
   .module('timePlannerRowDirective', [])
   .directive('timePlannerRow', () => {
-    const link = (scope) => {
+    const controller = ($scope) => {
       const _methods = {
         week: {
           fillSegments: _fillSegmentsForWeek
@@ -15,13 +15,14 @@ angular
 
       // INIT
       _prepareItems();
+      $scope.$watchCollection('options', _prepareItems);
 
       // Generate segments for each row
       function _prepareItems() {
-        scope.row.segments = [];
-        scope.row.hours = 0;
-        scope.$parent.segments.forEach(() => scope.row.segments.push([]));
-        scope.row.items.forEach(_methods[scope.$parent.options.timeScope].fillSegments);
+        $scope.row.segments = [];
+        $scope.row.hours = 0;
+        $scope.$parent.segments.forEach(() => $scope.row.segments.push([]));
+        $scope.row.items.forEach(_methods[$scope.$parent.options.timeScope].fillSegments);
       }
 
       // Fill each segment with items. This method is solely for week time scope
@@ -44,10 +45,10 @@ angular
           Math.abs((schedule.scheduledStart.getTime() - schedule.scheduledEnd.getTime()) / msInDay)
         );
 
-        scope.row.hours += itemLength * 8;
+        $scope.row.hours += itemLength * 8;
 
         for (let i = 0; i < itemLength; i++) {
-          scope.row.segments[firstDayNumber + i].push(item);
+          $scope.row.segments[firstDayNumber + i].push(item);
         }
       }
 
@@ -62,22 +63,23 @@ angular
 
         schedule = _setBoundaries(schedule);
         firstHour = schedule.scheduledStart.getHours();
-        itemLength = schedule.scheduledEnd.getHours() - schedule.scheduledStart.getHours() + 1;
+        itemLength = schedule.scheduledEnd.getHours() - schedule.scheduledStart.getHours() +
+          (schedule.scheduledEnd.getMinutes() === 0 ? 0 : 1); // if it ends with 00 - we don't count that hour
 
-        scope.row.hours += itemLength;
+        $scope.row.hours += itemLength;
 
         for (let i = 0; i < itemLength; i++) {
-          scope.row.segments[firstHour + i].push(item);
+          $scope.row.segments[firstHour + i].push(item);
         }
       }
 
       // Set boundaries for item inside the planner
       function _setBoundaries(schedule) {
-        schedule.scheduledStart = schedule.scheduledStart < scope.$parent.options.from ?
-          new Date(scope.$parent.options.from) : schedule.scheduledStart;
+        schedule.scheduledStart = schedule.scheduledStart < $scope.$parent.options.from ?
+          new Date($scope.$parent.options.from) : schedule.scheduledStart;
 
-        schedule.scheduledEnd = schedule.scheduledEnd > scope.$parent.options.to ?
-          new Date(scope.$parent.options.to) : schedule.scheduledEnd;
+        schedule.scheduledEnd = schedule.scheduledEnd > $scope.$parent.options.to ?
+          new Date($scope.$parent.options.to) : schedule.scheduledEnd;
 
         return schedule;
       }
@@ -86,6 +88,6 @@ angular
     return {
       restrict: 'A',
       template: template,
-      link: link
+      controller: controller
     };
   });
