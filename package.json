@@ -8,7 +8,7 @@
     "build": "node_modules/.bin/webpack -p --config webpack-release.config.js",
     "watch": "node_modules/.bin/webpack --progress --colors --watch --config webpack-development.config.js",
     "test": "./node_modules/.bin/karma start karma.conf.js",
-    "test:watch": "yarn run test:watch --no-single-run --auto-watch",
+    "test:watch": "yarn run test --no-single-run --auto-watch",
     "release": "echo \"npm magic goes here\""
   },
   "repository": {
@@ -39,9 +39,6 @@
     "sass-loader": "^6.0.5",
     "shelljs": "^0.7.8",
     "webpack": "^2.6.1"
-  },
-  "peerDependencies": {
-    "angular": "^1.5.6"
   },
   "dependencies": {
     "angular": "^1.5.6",
