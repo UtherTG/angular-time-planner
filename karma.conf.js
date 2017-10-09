@@ -1,4 +1,5 @@
-let webpackTestsConfig = require('./webpack-test.config');
+const webpackTestsConfig = require('./webpack-test.config');
+process.env.CHROME_BIN = require('puppeteer').executablePath();
 
 module.exports = function(config) {
   config.set({
@@ -26,7 +27,13 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
     autoWatch: false,
     autoWatchBatchDelay: 300,
-    browsers: ['Chrome'],
+    browsers: ['HC_with_tweaks'],
+    customLaunchers: {
+      HC_with_tweaks: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
     singleRun: true,
     concurrency: Infinity
   })

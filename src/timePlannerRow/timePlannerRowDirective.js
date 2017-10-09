@@ -59,13 +59,13 @@ angular
             scheduledStart: new Date(item.scheduled_start),
             scheduledEnd: new Date(item.scheduled_end)
           },
-          itemLength, firstHour;
+          itemLength, firstHour, overlap;
 
         schedule = _setBoundaries(schedule);
         firstHour = schedule.scheduledStart.getHours();
-        itemLength = schedule.scheduledEnd.getHours() - schedule.scheduledStart.getHours() +
-          (schedule.scheduledEnd.getMinutes() === 0 ? 0 : 1); // if it ends with 00 - we don't count that hour
-
+        overlap = schedule.scheduledStart.getHours() > schedule.scheduledEnd.getHours();
+        itemLength = (overlap ? 24 : schedule.scheduledEnd.getHours()) - schedule.scheduledStart.getHours();
+        itemLength += schedule.scheduledEnd.getMinutes() === 0 ? 0 : 1; // if it ends with 00 - we don't count that hour
         $scope.row.hours += itemLength;
 
         for (let i = 0; i < itemLength; i++) {
@@ -76,10 +76,10 @@ angular
       // Set boundaries for item inside the planner
       function _setBoundaries(schedule) {
         schedule.scheduledStart = schedule.scheduledStart < $scope.$parent.options.from ?
-          new Date($scope.$parent.options.from) : schedule.scheduledStart;
+          $scope.$parent.options.from : schedule.scheduledStart;
 
         schedule.scheduledEnd = schedule.scheduledEnd > $scope.$parent.options.to ?
-          new Date($scope.$parent.options.to) : schedule.scheduledEnd;
+          $scope.$parent.options.to : schedule.scheduledEnd;
 
         return schedule;
       }
