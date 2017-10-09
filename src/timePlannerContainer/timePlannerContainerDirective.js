@@ -6,7 +6,7 @@ import 'angular-native-dragdrop';
 angular
   .module('timePlannerContainerDirective', ['ang-drag-drop'])
   .directive('timePlannerContainer', ['$rootScope', '$locale', 'LOCALES', ($rootScope, $locale, LOCALES) => {
-    const controller = ($scope) => {
+    const controller = ['$scope', ($scope) => {
       let
         _localeId = LOCALES.AVAILABLE.includes($locale.id) ? $locale.id : LOCALES.DEFAULT,
         _defaultOptions = {
@@ -71,7 +71,7 @@ angular
         return [...alteredWeek, ...week];
       }
 
-    };
+    }];
 
     return {
       restrict: 'E',

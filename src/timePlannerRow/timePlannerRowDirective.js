@@ -3,7 +3,7 @@ import template from './timePlannerRowTemplate.html';
 angular
   .module('timePlannerRowDirective', [])
   .directive('timePlannerRow', () => {
-    const controller = ($scope) => {
+    const controller = ['$scope', ($scope) => {
       const _methods = {
         week: {
           fillSegments: _fillSegmentsForWeek
@@ -83,7 +83,7 @@ angular
 
         return schedule;
       }
-    };
+    }];
 
     return {
       restrict: 'A',
