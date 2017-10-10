@@ -7,13 +7,13 @@ export const mockData = {
       items: [
         { // hours 7
           id: 1,
-          scheduled_start: 1507280400000, // 06.10 14
-          scheduled_end: 1507305600000 // 06.10 21
+          scheduled_start: 'Fri Oct 06 2017 14:00:00 UT',
+          scheduled_end: 'Fri Oct 06 2017 21:00:00 UT'
         },
         { // hours 36
           id: 2,
-          scheduled_start: 1507219200000, // 05.10 21
-          scheduled_end: 1507338000000 // 07.10 06
+          scheduled_start: 'Thu Oct 05 2017 21:00:00 UT',
+          scheduled_end: 'Sat Oct 07 2017 06:00:00 UT'
         }
       ]
     },
@@ -25,13 +25,13 @@ export const mockData = {
       items: [
         { // hours 7
           id: 1,
-          scheduled_start: 1507280400000, // 06.10 14
-          scheduled_end: 1507305600000 // 06.10 21
+          scheduled_start: 'Fri Oct 06 2017 14:00:00 UT',
+          scheduled_end: 'Fri Oct 06 2017 21:00:00 UT'
         },
         { // hours 36
           id: 2,
-          scheduled_start: 1507219200000, // 05.10 21
-          scheduled_end: 1507338000000 // 07.10 06
+          scheduled_start: 'Thu Oct 05 2017 21:00:00 UT',
+          scheduled_end: 'Sat Oct 07 2017 06:00:00 UT'
         }
       ]
     }
@@ -40,7 +40,7 @@ export const mockData = {
     type: 'histogram',
     needCounter: true,
     timeScope: 'day',
-    from: 1507230000000, // 06.10 00
-    to: 1507316399999,  // 06.10 23-59
+    from: 'Fri Oct 06 2017 00:00:00 UT', // 06.10 00
+    to: 'Fri Oct 06 2017 23:59:59.999 UT',  // 06.10 23-59
   }
 };
