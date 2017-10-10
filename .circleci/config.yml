@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/node:6-browsers
         environment:
-          CHROME_BIN: "/usr/bin/google-chrome"
+          CHROME_BIN: '/usr/bin/google-chrome'
       - image: mongo:3.4.4
     steps:
       - checkout
@@ -21,6 +21,9 @@ jobs:
           name: test
           command: yarn run test
       - run:
+          name: prepare for nyc
+          command: sudo mkdir .nyc_output
+      - run:
           name: code-coverage
           command: './node_modules/.bin/nyc report --reporter=text-lcov'
       - store_artifacts:
@@ -31,3 +34,6 @@ jobs:
           prefix: coverage
       - store_test_results:
           path: test-results.xml
+      - run:
+          name: clean after nyc
+          command: sudo rm -rf .nyc_output
