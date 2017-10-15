@@ -3,6 +3,7 @@
 import './timePlannerContainer/timePlannerContainerDirective';
 import './timePlannerRow/timePlannerRowDirective';
 import './timePlannerCell/timePlannerCellDirective';
+import './timeSegment/timeSegmentService';
 
 import '../styles/angular-time-planner.scss';
 

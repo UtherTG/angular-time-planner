@@ -1,28 +1,56 @@
 import template from './timePlannerRowTemplate.html';
 
 angular
-  .module('timePlannerRowDirective', [])
+  .module('timePlannerRowDirective', ['timeSegment'])
   .directive('timePlannerRow', () => {
-    const controller = ['$scope', ($scope) => {
+    const controller = ['$scope', 'TimeSegment', ($scope, TimeSegment) => {
       const _methods = {
         week: {
-          fillSegments: _fillSegmentsForWeek
+          fillSegments: _fillSegmentsForWeek,
+          setRange: _setRangeForWeekDay
         },
         day: {
-          fillSegments: _fillSegmentsForDay
+          fillSegments: _fillSegmentsForDay,
+          setRange: _setRangeForHour
         }
       };
 
       // INIT
-      _prepareItems();
       $scope.$watchCollection('options', _prepareItems);
 
       // Generate segments for each row
       function _prepareItems() {
         $scope.row.segments = [];
         $scope.row.hours = 0;
-        $scope.$parent.segments.forEach(() => $scope.row.segments.push([]));
-        $scope.row.items.forEach(_methods[$scope.$parent.options.timeScope].fillSegments);
+        $scope.$parent.segments.forEach((segment, index) => {
+          $scope.row.segments.push(new TimeSegment({
+            ...segment,
+            range: _methods[$scope.options.timeScope].setRange(index)
+          }));
+        });
+        $scope.row.items.forEach(_methods[$scope.options.timeScope].fillSegments);
+      }
+
+      function _setRangeForWeekDay(index) {
+        let
+          rangeFrom = new Date($scope.options.from),
+          rangeTo = new Date($scope.options.to),
+          firstDate = rangeFrom.getDate();
+
+        rangeFrom = rangeFrom.setDate(firstDate + index);
+        rangeTo = rangeTo.setDate(firstDate + index);
+
+        return [rangeFrom, rangeTo]
+      }
+
+      function _setRangeForHour(index) {
+        let
+          rangeFrom = new Date($scope.$parent.options.from),
+          rangeTo = new Date($scope.$parent.options.to);
+
+        rangeFrom = rangeFrom.setHours(index);
+        rangeTo = rangeTo.setHours(index);
+        return [rangeFrom, rangeTo];
       }
 
       // Fill each segment with items. This method is solely for week time scope
@@ -48,7 +76,7 @@ angular
         $scope.row.hours += itemLength * 8;
 
         for (let i = 0; i < itemLength; i++) {
-          $scope.row.segments[firstDayNumber + i].push(item);
+          $scope.row.segments[firstDayNumber + i].addItem(item);
         }
       }
 
@@ -69,7 +97,7 @@ angular
         $scope.row.hours += itemLength;
 
         for (let i = 0; i < itemLength; i++) {
-          $scope.row.segments[firstHour + i].push(item);
+          $scope.row.segments[firstHour + i].addItem(item);
         }
       }
 

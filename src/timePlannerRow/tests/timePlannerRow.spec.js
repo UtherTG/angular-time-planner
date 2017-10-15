@@ -22,7 +22,7 @@ describe('timePlannerRow directive', () => {
 
   describe('creating row', () => {
     it('should create row with hours counter', () => {
-      expect(angular.element(element[0].querySelectorAll('.atpc-label'))[0]).not.toBeUndefined();
+      expect(angular.element(element[0].querySelectorAll('.atpc-label'))[0]).toBeDefined();
     });
   });
 
@@ -35,7 +35,7 @@ describe('timePlannerRow directive', () => {
     it('should count correct amount of hours for \'User 1\'', () => {
       const isolatedScope = element.isolateScope();
       let expectedResult = 0;
-      isolatedScope.rows[0].segments.forEach(segment => expectedResult += segment.length);
+      isolatedScope.rows[0].segments.forEach(segment => expectedResult += segment.items.length);
       expect(isolatedScope.rows[0].hours).toEqual(expectedResult);
     });
   });
