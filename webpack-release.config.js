@@ -5,7 +5,7 @@ let
 
 releaseConfig = {
   output: {
-    filename: 'angular-time-planner.js',
+    filename: 'angular-time-planner.min.js',
     path: path.resolve(__dirname, 'release'),
     library: 'angularTimePlanner',
     libraryTarget: 'umd',

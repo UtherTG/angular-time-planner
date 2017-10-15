@@ -1,7 +1,7 @@
 {
   "name": "angular-time-planner",
   "version": "0.0.1",
-  "main": "release/angular-time-planner.js",
+  "main": "release/angular-time-planner.min.js",
   "author": "Lekontsev Vitalii (UtherTG)",
   "license": "MIT",
   "scripts": {
