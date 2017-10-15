@@ -28,7 +28,7 @@ describe('timePlannerContainer directive', () => {
 
     it('should create segments with numeric values of hours', () => {
       const isolatedScope = element.isolateScope();
-      expect(isolatedScope.segments[4]).toEqual(4);
+      expect(isolatedScope.segments[4].name).toEqual(4);
     })
   });
 
@@ -45,14 +45,14 @@ describe('timePlannerContainer directive', () => {
 
     it('should create segments with text value of a day', () => {
       const isolatedScope = element.isolateScope();
-      expect(isolatedScope.segments[0]).toEqual('Sun');
+      expect(isolatedScope.segments[0].name).toEqual('Sun');
     });
 
     it('should create segments with Monday as a first day when firstDay option is set to 1', () => {
       $scope.options.firstDay = 1;
       $scope.$digest();
       const isolatedScope = element.isolateScope();
-      expect(isolatedScope.segments[0]).toEqual('Mon');
+      expect(isolatedScope.segments[0].name).toEqual('Mon');
     });
   });
 });

@@ -11,7 +11,7 @@
            ng-repeat="segment in segments"
            ng-class="{'week-day-segment': options.timeScope === 'week',
                       'hour-segment': options.timeScope === 'day'}">
-        <span class="atpc-label">{{segment}}</span>
+        <span class="atpc-label">{{segment.name}}</span>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 <div class="atp-segment-item-wrapper">
   <div class="atp-segment-item"
-       ng-repeat="item in segment"
+       ng-repeat="item in segment.items"
        ng-class="[item.segmentType, {'highlighted': (item.id === highlightedItem.id)}]"
        ng-mouseenter="onHoverEvent(item)"
        ng-mouseleave="onHoverEvent()"

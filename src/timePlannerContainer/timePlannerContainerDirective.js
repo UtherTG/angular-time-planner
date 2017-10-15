@@ -4,9 +4,9 @@ import 'angular-native-dragdrop';
 
 
 angular
-  .module('timePlannerContainerDirective', ['ang-drag-drop'])
+  .module('timePlannerContainerDirective', ['ang-drag-drop', 'timeSegment'])
   .directive('timePlannerContainer', ['$rootScope', '$locale', 'LOCALES', ($rootScope, $locale, LOCALES) => {
-    const controller = ['$scope', ($scope) => {
+    const controller = ['$scope', 'TimeSegment', ($scope, TimeSegment) => {
       let
         _localeId = LOCALES.AVAILABLE.includes($locale.id) ? $locale.id : LOCALES.DEFAULT,
         _defaultOptions = {
@@ -16,7 +16,6 @@ angular
           dropChannel: 'atp-row'
         };
 
-      _init();
       $scope.$watchCollection('options', _init);
 
       // Scope functions
@@ -56,7 +55,10 @@ angular
         const hours = [];
 
         for (let i = 0; i < 24; i++) {
-          hours.push(i);
+          hours.push(new TimeSegment({
+            name: i,
+            segmentType: 'hour'
+          }));
         }
 
         return hours;
@@ -65,10 +67,20 @@ angular
       // Method to generate week days labels
       // I use only days from locales. First day of the week is the same as Date() (0 - Sun)
       function _getWeekDays() {
-        let
-          week = [...$locale.DATETIME_FORMATS.SHORTDAY],
-          alteredWeek = week.splice($scope.options.firstDay  || 0, week.length);
-        return [...alteredWeek, ...week];
+        const
+          defaultWeek = [...$locale.DATETIME_FORMATS.SHORTDAY],
+          alteredWeek = defaultWeek.splice($scope.options.firstDay  || 0, defaultWeek.length),
+          preparedWeek = [...alteredWeek, ...defaultWeek],
+          segments = [];
+
+        preparedWeek.forEach(day => {
+          segments.push(new TimeSegment({
+            name: day,
+            segmentType: 'week-day'
+          }));
+        });
+
+        return segments;
       }
 
     }];
