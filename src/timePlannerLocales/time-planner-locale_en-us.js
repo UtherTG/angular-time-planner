@@ -4,6 +4,7 @@ module.exports = {
     counterTitle: {
       days: 'Days',
       hours: 'Hours'
-    }
+    },
+    timetableTitle: 'Timetable'
   }
 };

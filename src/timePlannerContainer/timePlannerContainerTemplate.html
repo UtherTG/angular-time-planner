@@ -4,7 +4,10 @@
       <div class="atp-cell atpr-title">
         <span class="atpc-label">{{locale.labels.rowTitle}}</span>
       </div>
-      <div class="atp-cell atpr-counter" ng-if="options.needCounter">
+      <div class="atp-cell atpr-timetable" ng-if="!options.disableTimetable">
+        <span class="atpc-label">{{locale.labels.timetableTitle}}</span>
+      </div>
+      <div class="atp-cell atpr-counter" ng-if="!options.disableCounter">
         <span class="atpc-label">{{locale.labels.counterTitle.hours}}</span>
       </div>
       <div class="atp-cell atp-segment"

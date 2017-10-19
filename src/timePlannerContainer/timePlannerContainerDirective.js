@@ -11,7 +11,7 @@ angular
         _localeId = LOCALES.AVAILABLE.includes($locale.id) ? $locale.id : LOCALES.DEFAULT,
         _defaultOptions = {
           timeScope: 'week',
-          needCounter: false,
+          disableCounter: true,
           editable: false,
           dropChannel: 'atp-row'
         };
@@ -57,7 +57,8 @@ angular
         for (let i = 0; i < 24; i++) {
           hours.push(new TimeSegment({
             name: i,
-            segmentType: 'hour'
+            segmentType: 'hour',
+            disableTimetable: true
           }));
         }
 
@@ -76,7 +77,8 @@ angular
         preparedWeek.forEach(day => {
           segments.push(new TimeSegment({
             name: day,
-            segmentType: 'week-day'
+            segmentType: 'week-day',
+            disableTimetable: true
           }));
         });
 
