@@ -34,8 +34,22 @@ time-planner-container {
     }
   }
 
-  .atp-segment:nth-child(odd) {
-    background-color: darken($cell-background-color, 5);
+  .atp-segment {
+    &:nth-child(odd) {
+      background-color: darken($cell-background-color, 5);
+    }
+
+    &.week-day-segment {
+      width: 100px;
+    }
+
+    &.unavailable-segment {
+      background-color: #d7e9f2 !important;
+    }
+
+    &.hour-segment {
+      width: 40px;
+    }
   }
 
   .atp-cell {
@@ -49,7 +63,8 @@ time-planner-container {
     align-items: stretch;
 
     &.atpr-counter,
-    &.atpr-title {
+    &.atpr-title,
+    &.atpr-timetable {
       padding: 0 1em;
     }
 
@@ -63,11 +78,8 @@ time-planner-container {
       border-left: none;
     }
 
-    &.week-day-segment {
-      width: 100px;
-    }
-    &.hour-segment {
-      width: 40px;
+    &.atpr-timetable {
+      width: 125px;
     }
   }
 

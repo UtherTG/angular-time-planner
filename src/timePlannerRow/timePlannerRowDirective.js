@@ -1,13 +1,13 @@
 import template from './timePlannerRowTemplate.html';
 
 angular
-  .module('timePlannerRowDirective', ['timeSegment'])
+  .module('timePlannerRowDirective', ['timeSegment', 'timetable'])
   .directive('timePlannerRow', () => {
-    const controller = ['$scope', 'TimeSegment', ($scope, TimeSegment) => {
+    const controller = ['$scope', 'TimeSegment', 'Timetable', ($scope, TimeSegment, Timetable) => {
       const _methods = {
         week: {
           fillSegments: _fillSegmentsForWeek,
-          setRange: _setRangeForWeekDay
+          setRange: _setRangeForDay
         },
         day: {
           fillSegments: _fillSegmentsForDay,
@@ -23,15 +23,22 @@ angular
         $scope.row.segments = [];
         $scope.row.hours = 0;
         $scope.$parent.segments.forEach((segment, index) => {
-          $scope.row.segments.push(new TimeSegment({
+          const timeSegment = new TimeSegment({
             ...segment,
             range: _methods[$scope.options.timeScope].setRange(index)
-          }));
+          });
+
+          if (!$scope.row.disableTimetable) {
+            timeSegment.timetable = $scope.row.timetable && new Timetable($scope.row.timetable);
+            timeSegment.toggleDisabled(!timeSegment.timetable || !timeSegment.timetable.validate(timeSegment.range));
+          }
+
+          $scope.row.segments.push(timeSegment);
         });
         $scope.row.items.forEach(_methods[$scope.options.timeScope].fillSegments);
       }
 
-      function _setRangeForWeekDay(index) {
+      function _setRangeForDay(index) {
         let
           rangeFrom = new Date($scope.options.from),
           rangeTo = new Date($scope.options.to),
@@ -39,7 +46,6 @@ angular
 
         rangeFrom = rangeFrom.setDate(firstDate + index);
         rangeTo = rangeTo.setDate(firstDate + index);
-
         return [rangeFrom, rangeTo]
       }
 
@@ -73,9 +79,12 @@ angular
           Math.abs((schedule.scheduledStart.getTime() - schedule.scheduledEnd.getTime()) / msInDay)
         );
 
-        $scope.row.hours += itemLength * 8;
+        if (!$scope.options.disableCounter) {
+          $scope.row.hours += itemLength * 8;
+        }
 
         for (let i = 0; i < itemLength; i++) {
+          !$scope.row.segments[firstDayNumber + i].disabled &&
           $scope.row.segments[firstDayNumber + i].addItem(item);
         }
       }
@@ -94,9 +103,13 @@ angular
         overlap = schedule.scheduledStart.getHours() > schedule.scheduledEnd.getHours();
         itemLength = (overlap ? 24 : schedule.scheduledEnd.getHours()) - schedule.scheduledStart.getHours();
         itemLength += schedule.scheduledEnd.getMinutes() === 0 ? 0 : 1; // if it ends with 00 - we don't count that hour
-        $scope.row.hours += itemLength;
+
+        if (!$scope.options.disableCounter) {
+          $scope.row.hours += itemLength;
+        }
 
         for (let i = 0; i < itemLength; i++) {
+          !$scope.row.segments[firstHour + i].disabled &&
           $scope.row.segments[firstHour + i].addItem(item);
         }
       }

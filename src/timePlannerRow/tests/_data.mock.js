@@ -4,6 +4,19 @@ export const mockData = {
       title: 'User 1',
       editable: true,
       id: 1,
+      timetable: {
+        start: [10, 0],
+        end: [21, 0],
+        weekAvailability: {
+          mon: true,
+          tue: true,
+          wed: true,
+          thu: true,
+          fri: true,
+          sat: false,
+          sun: false
+        }
+      },
       items: [
         { // hours 7
           id: 1,
@@ -22,6 +35,19 @@ export const mockData = {
       editable: true,
       hours: 106,
       id: 2,
+      timetable: {
+        start: [10, 0],
+        end: [21, 0],
+        weekAvailability: {
+          mon: true,
+          tue: true,
+          wed: true,
+          thu: true,
+          fri: true,
+          sat: false,
+          sun: false
+        }
+      },
       items: [
         { // hours 7
           id: 1,

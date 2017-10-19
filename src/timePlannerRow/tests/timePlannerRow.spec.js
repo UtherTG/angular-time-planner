@@ -22,8 +22,12 @@ describe('timePlannerRow directive', () => {
 
   describe('creating row', () => {
     it('should create row with hours counter', () => {
-      expect(angular.element(element[0].querySelectorAll('.atpc-label'))[0]).toBeDefined();
+      expect(angular.element(element[0].querySelectorAll('.atpr-counter'))[0]).toBeDefined();
     });
+
+    it('should create row with timetable column', () => {
+      expect(angular.element(element[0].querySelectorAll('.atpr-timetable'))[0]).toBeDefined();
+    })
   });
 
   describe('filling segments for a day', () => {

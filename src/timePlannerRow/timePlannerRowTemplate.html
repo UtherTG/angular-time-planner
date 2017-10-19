@@ -1,11 +1,17 @@
 <div class="atp-cell atpr-title">
   <span class="atpc-label">{{row.title}}</span>
 </div>
+<div class="atp-cell atpr-timetable" ng-if="!options.disableTimetable">
+  <span class="atpc-label">
+    {{row.timetable.start ? row.timetable.start.join(':') + " - " + row.timetable.end.join(':') : 'N/A'}}
+  </span>
+</div>
 <div class="atp-cell atpr-counter" ng-if="options.needCounter">
   <span class="atpc-label">{{row.hours || 0}}</span>
 </div>
 <div class="atp-cell atp-segment"
      ng-repeat="segment in row.segments"
      ng-class="{'week-day-segment': options.timeScope === 'week',
-                'hour-segment': options.timeScope === 'day'}"
+                'hour-segment': options.timeScope === 'day',
+                'unavailable-segment': segment.disabled}"
      time-planner-cell></div>

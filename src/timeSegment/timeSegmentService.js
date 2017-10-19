@@ -7,6 +7,7 @@ angular
         this.segmentType = params.segmentType;
         this.items = params.items || [];
         this.range = params.range || [];
+        this.disabled = params.disabled || false;
       }
 
       addItem(item) {
@@ -15,6 +16,10 @@ angular
 
       removeItem(itemForRemove) {
         this.items = this.items.filter(item => item.id !== itemForRemove.id)
+      }
+
+      toggleDisabled(boolean) {
+        this.disabled = typeof boolean === 'undefined' ? !this.disabled : boolean;
       }
     }
 
