@@ -22,8 +22,6 @@ angular
 
       function _updatePosition() {
         const offset = initialOffset + _calculateOffset();
-        console.log(document.querySelector('.atp-items-wrapper .atp-segment'));
-        console.log(initialOffset, _calculateOffset());
         element.css({
           left: `${offset}px`,
           opacity: offset ? 1 : 0
