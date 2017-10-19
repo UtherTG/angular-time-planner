@@ -18,9 +18,12 @@
       </div>
     </div>
   </div>
-  <div class="atp-row"
-       ng-repeat="row in rows"
-       drop-channel="{{options.editable && row.editable && options.dropChannel}}"
-       ui-on-drop="onDropEvent($data, row.id)"
-       time-planner-row></div>
+  <div class="atp-items-wrapper">
+    <div class="atp-row"
+         ng-repeat="row in rows"
+         drop-channel="{{options.editable && row.editable && options.dropChannel}}"
+         ui-on-drop="onDropEvent($data, row.id)"
+         time-planner-row></div>
+    <current-time-marker class="atp-current-time-marker" ng-if="!options.disableCurrentTimeMarker"/>
+  </div>
 </div>

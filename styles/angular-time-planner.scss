@@ -25,6 +25,20 @@ time-planner-container {
     }
   }
 
+  .atp-items-wrapper {
+    position: relative;
+  }
+
+  .atp-current-time-marker {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: #000;
+    opacity: 0;
+  }
+
   .atp-row {
     min-height: 3em;
     display: flex;

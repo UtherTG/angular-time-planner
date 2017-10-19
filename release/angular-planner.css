@@ -14,6 +14,16 @@ time-planner-container {
     text-align: center !important; }
     time-planner-container .atp-head .atp-cell.atp-segment:nth-child(odd) {
       background-color: #d6e8ef; }
+  time-planner-container .atp-items-wrapper {
+    position: relative; }
+  time-planner-container .atp-current-time-marker {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: #000;
+    opacity: 0; }
   time-planner-container .atp-row {
     min-height: 3em;
     display: flex; }

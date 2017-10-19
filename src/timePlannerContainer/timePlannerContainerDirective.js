@@ -4,7 +4,7 @@ import 'angular-native-dragdrop';
 
 
 angular
-  .module('timePlannerContainerDirective', ['ang-drag-drop', 'timeSegment'])
+  .module('timePlannerContainerDirective', ['ang-drag-drop', 'timeSegment', 'currentTimeMarkerDirective'])
   .directive('timePlannerContainer', ['$rootScope', '$locale', 'LOCALES', ($rootScope, $locale, LOCALES) => {
     const controller = ['$scope', 'TimeSegment', ($scope, TimeSegment) => {
       let
