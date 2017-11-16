@@ -24,7 +24,7 @@ angular
         const offset = initialOffset + _calculateOffset();
         element.css({
           left: `${offset}px`,
-          opacity: offset ? 1 : 0
+          opacity: initialOffset === offset ? 0 : 1
         });
       }
 
@@ -32,6 +32,7 @@ angular
         switch (scope.options.timeScope) {
           case 'day': return _calculateOffsetForDay();
           case 'week': return _calculateOffsetForWeek();
+          case 'month': return 0;
           case 'range': return 0;
         }
       }
@@ -52,13 +53,20 @@ angular
         return (segmentsWidth / 7) * (day + 0.25 * (quarter > 0 ? quarter : 0));
       }
 
-      // Live update
-      interval = $interval(function() {
-        _updatePosition();
-      }, 60000);
-      element.on('$destroy', function() {
+
+      function _startInterval() {
+        interval = $interval(function() {
+          _updatePosition();
+        }, 60000);
+      }
+
+      function _stopInterval() {
         $interval.cancel(interval);
-      });
+      }
+
+      // Live update
+      _startInterval();
+      element.on('$destroy', _stopInterval);
     };
 
     return {
