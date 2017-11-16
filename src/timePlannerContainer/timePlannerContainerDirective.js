@@ -11,7 +11,6 @@ angular
         _localeId = LOCALES.AVAILABLE.includes($locale.id) ? $locale.id : LOCALES.DEFAULT,
         _defaultOptions = {
           timeScope: 'week',
-          disableCounter: true,
           editable: false,
           dropChannel: 'atp-row'
         };
@@ -44,6 +43,9 @@ angular
           case 'range':
             // reserved for future use
             break;
+          case 'month':
+            return _getDaysForMonth();
+            break;
           case 'week':
           default:
             return _getWeekDays();
@@ -52,17 +54,35 @@ angular
 
       // Method to generate hours labels
       function _getHours() {
-        const hours = [];
+        const segments = [];
 
         for (let i = 0; i < 24; i++) {
-          hours.push(new TimeSegment({
+          segments.push(new TimeSegment({
             name: i,
             segmentType: 'hour',
             disableTimetable: true
           }));
         }
 
-        return hours;
+        return segments;
+      }
+
+      function _getDaysForMonth() {
+        const
+          segments = [],
+          fromDate = new Date($scope.options.from),
+          month = fromDate.getMonth() + 1,
+          daysInMonth = new Date(fromDate.getFullYear(), month, 0).getDate();
+
+        for (let i = 1; i <= daysInMonth; i++) {
+          segments.push(new TimeSegment({
+            name: `${i < 10 ? '0' + i : i}.${month}`,
+            segmentType: 'month-day',
+            disableTimetable: true
+          }))
+        }
+
+        return segments;
       }
 
       // Method to generate week days labels

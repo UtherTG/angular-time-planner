@@ -13,6 +13,7 @@
       <div class="atp-cell atp-segment"
            ng-repeat="segment in segments"
            ng-class="{'week-day-segment': options.timeScope === 'week',
+                      'month-day-segment': options.timeScope === 'month',
                       'hour-segment': options.timeScope === 'day'}">
         <span class="atpc-label">{{segment.name}}</span>
       </div>
