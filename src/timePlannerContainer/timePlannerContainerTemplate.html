@@ -10,6 +10,7 @@
       <div class="atp-cell atpr-counter" ng-if="!options.disableCounter">
         <span class="atpc-label">{{locale.labels.counterTitle.hours}}</span>
       </div>
+      <div class="atp-cell atpr-critical-items"></div>
       <div class="atp-cell atp-segment"
            ng-repeat="segment in segments"
            ng-class="{'week-day-segment': options.timeScope === 'week',

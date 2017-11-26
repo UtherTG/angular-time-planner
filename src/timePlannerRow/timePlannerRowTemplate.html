@@ -6,6 +6,9 @@
     {{row.timetable.start ? row.timetable.start.join(':') + " - " + row.timetable.end.join(':') : 'N/A'}}
   </span>
 </div>
+<div class="atp-cell atpr-critical-items"
+     ng-click="showCriticalItems(row.criticalItems)"
+     ng-class="{'active': row.criticalItems.length > 0}"></div>
 <div class="atp-cell atpr-counter" ng-if="!options.disableCounter">
   <span class="atpc-label">{{row.hours || 0}}</span>
 </div>

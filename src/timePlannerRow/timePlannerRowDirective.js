@@ -3,7 +3,7 @@ import template from './timePlannerRowTemplate.html';
 angular
   .module('timePlannerRowDirective', ['timeSegment', 'timetable'])
   .directive('timePlannerRow', () => {
-    const controller = ['$scope', 'TimeSegment', 'Timetable', ($scope, TimeSegment, Timetable) => {
+    const controller = ['$scope', '$rootScope', 'TimeSegment', 'Timetable', ($scope, $rootScope, TimeSegment, Timetable) => {
       const _methods = {
         week: {
           fillSegments: _fillSegmentsForWeek,
@@ -19,14 +19,20 @@ angular
         }
       };
 
+      $scope.showCriticalItems = _showCriticalItems;
+
       // INIT
       $scope.$watchCollection('options', _prepareItems);
+
+      function _showCriticalItems(criticalItems) {
+        $rootScope.$broadcast('ATP_SHOW_CRITICAL_ITEMS', criticalItems);
+      }
 
       // Generate segments for each row
       function _prepareItems() {
         $scope.row.segments = [];
         $scope.row.hours = 0;
-        $scope.row.disableTimetable = $scope.options.timeScope === 'month';
+        $scope.row.disableTimetable = $scope.row.disableTimetable || $scope.options.timeScope === 'month';
         $scope.$parent.segments.forEach((segment, index) => {
           const timeSegment = new TimeSegment({
             ...segment,
