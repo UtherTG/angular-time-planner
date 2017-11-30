@@ -16,6 +16,10 @@ angular
         month: {
           fillSegments: _fillSegmentsForMonth,
           setRange: _setRangeForDay
+        },
+        range: {
+          fillSegments: _fillSegmentsForRange,
+          setRange: _setRangeForDay
         }
       };
 
@@ -32,7 +36,7 @@ angular
       function _prepareItems() {
         $scope.row.segments = [];
         $scope.row.hours = 0;
-        $scope.row.disableTimetable = $scope.row.disableTimetable || $scope.options.timeScope === 'month';
+        $scope.row.disableTimetable = $scope.row.disableTimetable || $scope.options.timeScope === 'month' || $scope.options.timeScope === 'range';
         $scope.$parent.segments.forEach((segment, index) => {
           const timeSegment = new TimeSegment({
             ...segment,
@@ -46,6 +50,7 @@ angular
 
           $scope.row.segments.push(timeSegment);
         });
+
         $scope.row.items.forEach(_methods[$scope.options.timeScope].fillSegments);
       }
 
@@ -70,6 +75,38 @@ angular
         return [rangeFrom, rangeTo];
       }
 
+      function _fillSegmentsForRange(item) {
+        let
+          schedule = {
+            scheduledStart: new Date(item.scheduled_start),
+            scheduledEnd: new Date(item.scheduled_end),
+          },
+          msInDay = 24 * 60 * 60 * 1000,
+          itemLength, firstDayNumber;
+
+        schedule.scheduledStart.setHours(0,0,0,0);
+        schedule.scheduledEnd.setHours(23,59,59,999);
+
+        schedule = _setBoundaries(schedule);
+        firstDayNumber =
+          ($scope.$parent.options.from.getTime() - schedule.scheduledStart.getTime()) /
+          msInDay;
+
+        itemLength = Math.ceil(
+          Math.abs((schedule.scheduledStart.getTime() - schedule.scheduledEnd.getTime()) / msInDay)
+        );
+
+        for (let i = 0; i < itemLength; i++) {
+          if ($scope.row.segments[firstDayNumber + i] && !$scope.row.segments[firstDayNumber + i].disabled) {
+            $scope.row.segments[firstDayNumber + i].addItem(item);
+
+            if (!$scope.options.disableCounter) {
+              $scope.row.hours += 8;
+            }
+          }
+        }
+      }
+
       function _fillSegmentsForMonth(item) {
         let
           schedule = {
@@ -90,7 +127,7 @@ angular
         );
 
         for (let i = 0; i < itemLength; i++) {
-          if (!$scope.row.segments[firstDayNumber + i].disabled) {
+          if ($scope.row.segments[firstDayNumber + i] && !$scope.row.segments[firstDayNumber + i].disabled) {
             $scope.row.segments[firstDayNumber + i].addItem(item);
 
             if (!$scope.options.disableCounter) {
@@ -121,7 +158,7 @@ angular
         );
 
         for (let i = 0; i < itemLength; i++) {
-          if (!$scope.row.segments[firstDayNumber + i].disabled) {
+          if ($scope.row.segments[firstDayNumber + i] && !$scope.row.segments[firstDayNumber + i].disabled) {
             $scope.row.segments[firstDayNumber + i].addItem(item);
 
             if (!$scope.options.disableCounter) {
@@ -147,7 +184,7 @@ angular
         itemLength += schedule.scheduledEnd.getMinutes() === 0 ? 0 : 1; // if it ends with 00 - we don't count that hour
 
         for (let i = 0; i < itemLength; i++) {
-          if (!$scope.row.segments[firstHour + i].disabled) {
+          if ($scope.row.segments[firstHour + i] && !$scope.row.segments[firstHour + i].disabled) {
             $scope.row.segments[firstHour + i].addItem(item);
 
             if (!$scope.options.disableCounter) {

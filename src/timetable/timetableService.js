@@ -7,6 +7,7 @@ angular
         this.end = [Number(params.end[0]), Number(params.end[1])];
         this.breakStart = params.breakStart;
         this.breakEnd = params.breakEnd;
+        this.name = params.name || 'N/A';
         this.weekAvailability = params.weekAvailability;
       }
 

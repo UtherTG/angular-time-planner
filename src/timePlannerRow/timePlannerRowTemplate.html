@@ -2,8 +2,8 @@
   <span class="atpc-label">{{row.title}}</span>
 </div>
 <div class="atp-cell atpr-timetable" ng-if="!options.disableTimetable">
-  <span class="atpc-label">
-    {{row.timetable.start ? row.timetable.start.join(':') + " - " + row.timetable.end.join(':') : 'N/A'}}
+  <span class="atpc-label" title="{{row.timetable.name}}">
+    {{row.timetable.name}}
   </span>
 </div>
 <div class="atp-cell atpr-critical-items"
@@ -17,5 +17,7 @@
      ng-class="{'week-day-segment': options.timeScope === 'week',
                 'hour-segment': options.timeScope === 'day',
                 'month-day-segment': options.timeScope === 'month',
+                'days-{{row.segments.length}}': options.timeScope === 'month',
+                'range-day-segment': options.timeScope === 'range',
                 'unavailable-segment': segment.disabled}"
      time-planner-cell></div>

@@ -69,9 +69,9 @@ describe('timePlannerContainer directive', () => {
 
     it('should create segments with text values of a date and month', () => {
       const isolatedScope = element.isolateScope();
-      expect(isolatedScope.segments[0].name).toEqual('01.10');
-      expect(isolatedScope.segments[13].name).toEqual('14.10');
-      expect(isolatedScope.segments[30].name).toEqual('31.10');
+      expect(isolatedScope.segments[0].name).toEqual('10/01');
+      expect(isolatedScope.segments[13].name).toEqual('10/14');
+      expect(isolatedScope.segments[30].name).toEqual('10/31');
     })
   });
 });

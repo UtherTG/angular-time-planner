@@ -39,13 +39,10 @@ angular
         switch ($scope.options.timeScope) {
           case 'day':
             return _getHours();
-            break;
           case 'range':
-            // reserved for future use
-            break;
+            return _getDaysForRange();
           case 'month':
             return _getDaysForMonth();
-            break;
           case 'week':
           default:
             return _getWeekDays();
@@ -76,8 +73,28 @@ angular
 
         for (let i = 1; i <= daysInMonth; i++) {
           segments.push(new TimeSegment({
-            name: `${i < 10 ? '0' + i : i}.${month}`,
+            name: `${month}/${i < 10 ? '0' + i : i}`,
             segmentType: 'month-day',
+            disableTimetable: true
+          }))
+        }
+
+        return segments;
+      }
+
+      function _getDaysForRange() {
+        const
+          segments = [],
+          fromDate = new Date($scope.options.from),
+          toDate = new Date($scope.options.to),
+          daysInRange = Math.ceil((toDate.getTime() - fromDate.getTime()) / (1000*60*60*24));
+
+        for (let i = 1; i <= daysInRange; i++) {
+          let date = new Date(fromDate);
+          date.setDate(date.getDate() + (i - 1));
+          segments.push(new TimeSegment({
+            name: `${date.getMonth() + 1}/${date.getDate()}`,
+            segmentType: 'range-day',
             disableTimetable: true
           }))
         }
