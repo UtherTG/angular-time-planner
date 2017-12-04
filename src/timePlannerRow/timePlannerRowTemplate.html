@@ -1,9 +1,11 @@
 <div class="atp-cell atpr-title">
   <span class="atpc-label">{{row.title}}</span>
 </div>
-<div class="atp-cell atpr-timetable" ng-if="!options.disableTimetable">
-  <span class="atpc-label" title="{{row.timetable.name}}">
-    {{row.timetable.name}}
+<div class="atp-cell atpr-timetable"
+     ng-if="!options.disableTimetable"
+     ng-class="row.timetablesClasses">
+  <span class="atpc-label" title="{{row.timetablesNames.join(', ')}}">
+    {{row.timetablesNames.join(', ')}}
   </span>
 </div>
 <div class="atp-cell atpr-critical-items"

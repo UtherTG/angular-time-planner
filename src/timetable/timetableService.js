@@ -8,6 +8,8 @@ angular
         this.breakStart = params.breakStart;
         this.breakEnd = params.breakEnd;
         this.name = params.name || 'N/A';
+        this.type = params.type;
+        this.boundaries = params.boundaries;
         this.weekAvailability = params.weekAvailability;
       }
 

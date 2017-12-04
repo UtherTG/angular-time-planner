@@ -4,11 +4,11 @@ export const mockData = {
       title: 'User 1',
       editable: true,
       id: 1,
-      timetable: {
+      timetables: [{
         start: [10, 0],
         end: [19, 0],
         weekAvailability: [true, true, true, true, true, true, true],
-      },
+      }],
       items: [
         {
           id: 0,
@@ -36,11 +36,11 @@ export const mockData = {
       title: 'User 2',
       editable: true,
       id: 2,
-      timetable: {
+      timetables: [{
         start: [15, 0],
         end: [21, 0],
         weekAvailability: [true, true, false, true, true, false, false],
-      },
+      }],
       items: [
         {
           id: 0,
@@ -68,11 +68,11 @@ export const mockData = {
       title: 'User 3',
       editable: true,
       id: 3,
-      timetable: {
+      timetables: [{
         start: [15, 0],
         end: [21, 0],
         weekAvailability: [true, true, true, true, false, false, false],
-      },
+      }],
       items: [
         {
           id: 0,
