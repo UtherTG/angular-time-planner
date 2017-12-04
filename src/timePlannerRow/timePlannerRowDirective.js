@@ -36,7 +36,12 @@ angular
       function _prepareItems() {
         $scope.row.segments = [];
         $scope.row.hours = 0;
-        $scope.row.disableTimetable = $scope.row.disableTimetable || $scope.options.timeScope === 'month' || $scope.options.timeScope === 'range';
+        $scope.row.disableTimetable =
+          $scope.row.disableTimetable ||
+          ['month', 'range'].includes($scope.options.timeScope);
+
+        !$scope.row.disableTimetable && _normalizeRowTimetableData();
+
         $scope.$parent.segments.forEach((segment, index) => {
           const timeSegment = new TimeSegment({
             ...segment,
@@ -44,14 +49,48 @@ angular
           });
 
           if (!$scope.row.disableTimetable) {
-            timeSegment.timetable = $scope.row.timetable && new Timetable($scope.row.timetable);
-            timeSegment.toggleDisabled(!timeSegment.timetable || !timeSegment.timetable.validate(timeSegment.range));
+            let activeTimetable = _getTimetableForCurrentRange($scope.row.timetables, timeSegment.range);
+            timeSegment.timetable =
+              $scope.row.timetables.length > 0 &&
+              activeTimetable &&
+              new Timetable(activeTimetable);
+
+            timeSegment.toggleDisabled(!activeTimetable || !timeSegment.timetable.validate(timeSegment.range));
           }
 
           $scope.row.segments.push(timeSegment);
         });
 
         $scope.row.items.forEach(_methods[$scope.options.timeScope].fillSegments);
+      }
+
+      function _normalizeRowTimetableData() {
+        $scope.row.timetablesNames = [];
+        $scope.row.timetablesClasses = {
+          'timetable-type-on-call': false,
+          'timetable-type-night-shift': false,
+        };
+        $scope.row.timetables.forEach(timetable => {
+          if (timetable.type !== 'on-call') {
+            !$scope.row.timetablesNames.includes(timetable.name) && $scope.row.timetablesNames.push(timetable.name);
+            if (timetable.type === 'night-shift') {
+              $scope.row.timetablesClasses['timetable-type-night-shift'] = true;
+            }
+          } else {
+            $scope.row.timetablesClasses['timetable-type-on-call'] = true
+          }
+        });
+
+        if (!$scope.row.timetablesNames.length) {
+          $scope.row.timetablesNames.push('N/A');
+        }
+      }
+
+      function _getTimetableForCurrentRange(timetables, segmentRange) {
+        return timetables.find(timetable => {
+          return timetable.type !== 'on-call' || // We don't need on-call types here
+            (segmentRange[1] > timetable.boundaries.from && timetable.boundaries.to < segmentRange[0]);
+        });
       }
 
       function _setRangeForDay(index) {
