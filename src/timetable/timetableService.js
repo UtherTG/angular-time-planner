@@ -22,47 +22,37 @@ angular
           endHour = endDate.getHours();
 
         if (startHour === endHour) {
-          let morningCondition, eveningCondition, condition;
+          let condition;
 
           if (this.type === 'night-shift') {
             // Night shift is a special kind of shift.
             // If previous day was not available, we shouldn't use morning hours.
-            // And if current day is not available, but previous was, we should use morning hours.
+            // If next day is not available, we shouldn't use evening hours.
+            let
+              morningCondition = endHour < this.end[0],
+              eveningCondition = startHour >= this.start[0],
+              qualifyingDays;
 
-            // take care of evening hours first
-            morningCondition = endHour < this.end[0];
-            eveningCondition = startHour >= this.start[0];
-
-            if (weekDay === 0) {
-              // if it's a first day of the week, the only way to know if previous day was available(or not)
-              // is to check if this week is first in cycle. If yes, previous day was not available
-              // if this week not the first in cycle we should use last day of a previous cycle
-              if (this.boundaries.from < range[0]) {
-                // if not first in cycle check last day in the week
-                if (this.weekAvailability[6]) {
-                  // last day on previous week was available, so we use morning hours
-                  // check current day, and if it is available use evening hours too
-                  condition = this.weekAvailability[weekDay] ? (eveningCondition || morningCondition) : morningCondition;
-                } else {
-                  // last day on previous week was not available, so we check current day
-                  // and use only evening hours
-                  condition = eveningCondition && this.weekAvailability[weekDay];
-                }
-              } else {
-                // if first in cycle use evening hours if current day is available
-                condition = eveningCondition && this.weekAvailability[weekDay];
-              }
-            } else {
-              // check previous day, see if it was available or not
-              if (this.weekAvailability[weekDay - 1]) {
-                // if yes, use morning hours and check if current day available.
-                // if current day is available use evening hours too
-                condition = this.weekAvailability[weekDay] ? (eveningCondition || morningCondition) : morningCondition;
-              } else {
-                // if not, use only evening hours
-                condition = eveningCondition && this.weekAvailability[weekDay];
-              }
+            switch (weekDay) {
+              case 0:
+                qualifyingDays = [6, weekDay];
+                eveningCondition = this.weekAvailability[qualifyingDays[1]] && eveningCondition;
+                morningCondition =
+                  startDate.setHours(0,0,0,0) > this.boundaries.from && this.weekAvailability[qualifyingDays[0]];
+                break;
+              case 6:
+                qualifyingDays = [5, weekDay];
+                morningCondition = this.weekAvailability[qualifyingDays[0]] && morningCondition;
+                eveningCondition =
+                  endDate.setHours(23,59,59,999) < this.boundaries.to && this.weekAvailability[qualifyingDays[1]];
+                break;
+              default:
+                qualifyingDays = [weekDay - 1, weekDay];
+                morningCondition = this.weekAvailability[qualifyingDays[0]] && morningCondition;
+                eveningCondition = this.weekAvailability[qualifyingDays[1]] && eveningCondition;
             }
+
+            condition = morningCondition || eveningCondition;
           } else {
             condition = this.weekAvailability[weekDay] && (startHour >= this.start[0] && endHour < this.end[0]);
           }
