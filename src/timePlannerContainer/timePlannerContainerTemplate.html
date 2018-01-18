@@ -28,6 +28,9 @@
          drop-channel="{{options.editable && row.editable && options.dropChannel}}"
          ui-on-drop="onDropEvent($data, row.id)"
          time-planner-row></div>
-    <current-time-marker class="atp-current-time-marker" ng-if="!options.disableCurrentTimeMarker"/>
+    <current-time-marker
+      class="atp-current-time-marker"
+      ng-if="!options.disableCurrentTimeMarker && timeMarkerEnabled"
+    ></current-time-marker>
   </div>
 </div>
