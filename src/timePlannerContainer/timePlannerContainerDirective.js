@@ -39,7 +39,8 @@ angular
       function _checkIfTimeMarkerIsNeeded() {
         const today = new Date().getTime();
         if (!$scope.options.from) return false;
-        return $scope.options.from.getTime() < today && $scope.options.to.getTime() > today;
+        return new Date($scope.options.from).getTime() < today &&
+          new Date($scope.options.to).getTime() > today;
       }
 
       // Get segments for planner, hours, week, dates range. Default is a week.
